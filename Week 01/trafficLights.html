@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="cn" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title>紅綠燈</title>
+  <style type="text/css">
+    body {
+      background: #000;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    div {
+      width: 200px;
+      height: 200px;
+      margin: 30px;
+      border-radius: 50%
+    }
+
+    .red.light {
+      background: #ff0000;
+    }
+
+    .red {
+      background: #452521;
+    }
+
+    .green.light {
+      background: #00ff00;
+    }
+
+    .green {
+      background: #132613;
+    }
+
+    .yellow.light {
+      background: #ffff00;
+    }
+
+    .yellow {
+      background: #3c3c1a;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="red"></div>
+  <div class="green"></div>
+  <div class="yellow"></div>
+</body>
+<script>
+  function red() {
+    lightsOff();
+    document.getElementsByClassName("red")[0].classList.add("light");
+  }
+  function green() {
+    lightsOff();
+    document.getElementsByClassName("green")[0].classList.add("light");
+  }
+  function yellow() {
+    lightsOff();
+    document.getElementsByClassName("yellow")[0].classList.add("light");
+  }
+
+  function lightsOff() {
+    let lights = document.getElementsByTagName("div");
+    for (let i = 0; i < 3; i++) {
+      lights[i].classList.remove("light");
+    }
+  }
+
+  function go() {
+    green();
+    setTimeout(function(){
+      yellow();
+      setTimeout(function(){
+        red();
+        setTimeout(function(){
+          go();
+        }, 5000);
+      }, 2000);
+    }, 10000);
+  }
+</script>
+
+</html>
