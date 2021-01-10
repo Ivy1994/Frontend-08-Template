@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>LL AST</title>
+  </head>
+  <body>
+  </body>
+  <script>
+  const regexp = /([0-9\.]+)|([ \t]+)|([\r\n]+)|(\*)|(\/)|(\+)|(\-)/g;
+  const dictonary = ["Number", "Whitespace", "LineTerminator", "*", "/", "+", "-"];
+
+  function* tokenize(source) {
+    let result = null;
+    let lastIndex = 0;
+    while(true) {
+      lastIndex = regexp.lastIndex;
+      result = regexp.exec(source);
+
+      if(!result) break;
+      if(regexp.lastIndex - lastIndex > result[0].length) break;
+
+      let token = {
+        type: null,
+        value: null
+      };
+
+      for (let i = 1; i < dictonary.length; i++) {
+        if(result[i]) {
+          //v1:console.log(dictonary[i-1]);
+          token.type = dictonary[i-1];
+        }
+      }
+    //  console.log(result);
+    token.value = result[0];
+    yield token;
+    }
+    while(result);
+    yield {type: "EOF"};
+  }
+
+  //v1:tokenize("1024 + 10 * 25");
+  let source = []
+  for (let token of tokenize("1 + 2 * 5 + 3")) {
+    //v2:console.log(token);
+    if (token.type !== "Whitespace" && token.type !== "LineTerminator") {
+      source.push(token);
+    }
+  }
+  //console.log(source);
+
+  function Experssion(tokens) {
+    if (source[0].type === "AdditiveExperssion" && source[1] && source[1].type === "EOF") {
+      let node = {
+        type: "Experssion",
+        children: [source.shift(), source.shift()]
+      };
+      source.unshift(node);
+      return node;
+    }
+    AdditiveExperssion(source);
+    return Experssion(source);
+
+  }
+
+  function AdditiveExperssion(source) {
+    const type = "AdditiveExperssion";
+    if (source[0].type === "MultiplicativeExperssion") {
+      let node = {
+        type,
+        children: [source[0]]
+      }
+      source[0] = node;
+      return AdditiveExperssion(source);
+    }
+
+    if (source[0].type === type && source[1] && (source[1].type === "+" || source[1].type === "-")) {
+      let operator = source[1].type;
+      let node = {
+        type,
+        operator,
+        children: []
+      }
+      node.children.push(source.shift());
+      node.children.push(source.shift());
+      MultiplicativeExperssion(source);
+      node.children.push(source.shift());
+      source.unshift(node);
+      return AdditiveExperssion(source);
+    }
+
+    if (source[0].type === type)
+    return source[0];
+
+    MultiplicativeExperssion(source);
+    return MultiplicativeExperssion(source);
+  }
+
+  function MultiplicativeExperssion(source) {
+    const type = "MultiplicativeExperssion";
+    if (source[0].type === "Number") {
+      let node = {
+        type,
+        children: [source[0]]
+      }
+      source[0] = node;
+      return MultiplicativeExperssion(source);
+    }
+
+    if (source[0].type === type && source[1] && (source[1].type === "*" || source[1].type === "/")) {
+      let operator = source[1].type;
+      let node = {
+        type,
+        operator,
+        children: []
+      }
+      node.children.push(source.shift());
+      node.children.push(source.shift());
+      node.children.push(source.shift());
+      source.unshift(node);
+      return MultiplicativeExperssion(source);
+    }
+
+    if (source[0].type === type)
+    return source[0];
+
+    return MultiplicativeExperssion(source);
+  }
+
+  console.log(Experssion(source));
+  </script>
+</html>
