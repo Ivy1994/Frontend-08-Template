@@ -1,0 +1,100 @@
+{
+  "id": "JavaScript Object",
+  "children": [
+    {
+      "id": "本地对象",
+      "children": [
+        {
+          "id": "Object"
+        },
+        {
+          "id": "Array"
+        },
+        {
+          "id": "Date"
+        },
+        {
+          "id": "RegExp"
+        },
+        {
+          "id": "Function"
+        },
+        {
+          "id": "Boolean"
+        },
+        {
+          "id": "Number"
+        },
+        {
+          "id": "String"
+        },
+        {
+          "id": "Map"
+        },
+        {
+          "id": "Set"
+        },
+        {
+          "id": "Symbol"
+        },
+        {
+          "id": "Promise"
+        },
+        {
+          "id": "DataView"
+        },
+        {
+          "id": "ArrayBUffer"
+        },
+        {
+          "id": "Error",
+          "children": [
+            {
+              "id": "TBD"
+            },
+          ]
+        },
+      ]
+    },
+    {
+      "id": "内置对象",
+      "children": [
+        {
+          "id": "Global 对象",
+          "children": [
+            {
+              "id": "TBD"
+            }
+          ]
+        },
+        {
+          "id": "Math 对象",
+          "children": [
+            {
+              "id": "TBD"
+            }
+          ]
+        },
+        {
+          "id": "JSON 对象",
+          "children": [
+            {
+              "id": "TBD"
+            },
+            {
+              "id": "TBD"
+            },
+            {
+              "id": "TBD"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "宿主对象（此次不讨论）",
+      "children": [
+      ]
+    }
+  ]
+}
