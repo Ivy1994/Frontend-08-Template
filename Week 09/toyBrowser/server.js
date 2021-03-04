@@ -30,7 +30,6 @@ body div img{
 <body>
   <div>
     <img id="myid"/>
-    <img />
   </div>
 </body>
 </html>`);
