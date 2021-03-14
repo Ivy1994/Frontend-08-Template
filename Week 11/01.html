@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            .contain+div .hello {
+                color:aquamarine
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <div id = "id" class = "class"></div>
+        </div>
+        <div class = "contain">
+            <div id = "first"></div>
+            <p class = "hello"></p>
+            <p><span id = "test"></span></p>
+        </div>
+        <div>
+            <div><p></p></div>
+            <p class = "hello">wewewew</p>
+        </div>
+        <!-- div>p  #test 
+             .contain+div .hello
+        -->
+        
+        
+    </body>
+</html>
+<script>
+/*?为什么 first-letter 可以设置 float 之类的，而 first-line 不行呢？
+我认为是因为 first-line 选中的是浏览器中显示第一行文字。不同宽度第一行文字是不同的，要对其重新布局排版消耗性能大。*/
+
+    /*编写一个 match 函数。它接收两个参数，第一个参数是一个选择器字符串性质，
+    第二个是一个 HTML 元素。这个元素你可以认为它一定会在一棵 DOM 树里面。
+    通过选择器和 DOM 元素来判断，当前的元素是否能够匹配到我们的选择器。*/
+    /*
+    * 简单选择器（* tagName id class）
+    * 复合选择器（<sp> > + ~）
+    * 伪类 :not()
+    */
+    function match(selector, element) {
+       // console.log(element);
+        const selectLists = selector.split(" ").reverse();//[ #test, div>p];
+        
+        let selectList = selectLists[0].match(/(#|.|\[)?[\w]+/g);
+        if (selectList.length > 1) {
+    // 重新走一遍match函数
+    for (let i = 0; i < selectList.length; i++) {
+            if(!match(selectList[i],element)){
+                return false;
+            }
+        }
+        // 不返回false
+        return true;
+  }
+   if(selector.charAt(0) == "#"){
+        var attr =  element.attributes['id'].name === 'id';
+        if(attr && element.attributes['id'].value === selector.replace("#","")){
+            return true;
+        }
+    }else if (selector.charAt(0) == ".") {
+        var attr = element.attributes['class'].name === 'class'
+        if (attr) {
+            return element.attributes['class'].value.split(" ").some((value) => {
+                return value === selector.replace(".", '');
+            });
+        }
+    }else{
+        if(element.tagName === selector){
+            return true;
+        }
+    }
+    return false;
+    }
+    
+    console.log(match("div #id.class", document.getElementById("id")));
+</script>
