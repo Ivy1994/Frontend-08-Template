@@ -39,40 +39,67 @@
     * 复合选择器（<sp> > + ~）
     * 伪类 :not()
     */
+    var findResult = false;
+    function getId(selector, elementId) {
+        //element.attributes['id']
+        let attr =  elementId.name === 'id';
+        if(attr && elementId.value === selector.replace("#","")){
+            return true;
+        }
+        return false;
+    }
+    function getClass(selector, elementClass) {
+        //element.attributes['class']
+        let result = false;
+        let attr = elementClass.name === 'class';
+        if (attr) {
+            //console.log(elementClass.value.split(" "));
+            elementClass.value.split(" ").some((value) => {
+                //console.log(value === selector.replace(".", ''));
+                if(value === selector.replace(".", '')) {
+                    result = true;
+                }                  
+            });
+        }
+        return result;
+        
+    }
+    function getAttr(selector, elementAttr) {
+        return true;
+    }
     function match(selector, element) {
        // console.log(element);
         const selectLists = selector.split(" ").reverse();//[ #test, div>p];
         
-        let selectList = selectLists[0].match(/(#|.|\[)?[\w]+/g);
+        let selectList = selectLists[0].match(/((#|.|\[)?[\w]+=*\^*~*[\w]+\$*)/g);
+        //console.log(selectList);
         if (selectList.length > 1) {
-    // 重新走一遍match函数
-    for (let i = 0; i < selectList.length; i++) {
-            if(!match(selectList[i],element)){
-                return false;
+            for (let i = 0; i < selectList.length; i++) {
+                if(!match(selectList[i],element)){
+                    return false;
+                }
             }
         }
-        // 不返回false
-        return true;
-  }
-   if(selector.charAt(0) == "#"){
-        var attr =  element.attributes['id'].name === 'id';
-        if(attr && element.attributes['id'].value === selector.replace("#","")){
-            return true;
+        if (selector.charAt(0) == "#") {
+            findResult = getId(selector, element.attributes['id']) ;
+            console.log(findResult);
         }
-    }else if (selector.charAt(0) == ".") {
-        var attr = element.attributes['class'].name === 'class'
-        if (attr) {
-            return element.attributes['class'].value.split(" ").some((value) => {
-                return value === selector.replace(".", '');
-            });
+        if (selector.charAt(0) == ".") {
+            console.log(getClass(selector, element.attributes['class']));
+            //findResult = getClass(selector, element.attributes['class']);
         }
-    }else{
+        if (selector.charAt(0) == "[") {
+            findResult = getAttr(selector, element.attributes);
+        }
+        
+        
+        //getAttr(selector, element.attributes);
         if(element.tagName === selector){
             return true;
         }
-    }
-    return false;
+        return findResult;
     }
     
     console.log(match("div #id.class", document.getElementById("id")));
+    //console.log(match("div>p .class #id[width=^test]", document.getElementById("id")));
 </script>
