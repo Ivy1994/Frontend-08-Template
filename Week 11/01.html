@@ -9,7 +9,7 @@
     </head>
     <body>
         <div>
-            <div id = "id" class = "class"></div>
+            <div id = "id" class = "class" width="udhfud" attr-data="hjuhuh"></div>
         </div>
         <div class = "contain">
             <div id = "first"></div>
@@ -64,14 +64,16 @@
         return result;
         
     }
-    function getAttr(selector, elementAttr) {
+    function getAttr(selector,selectorVal, elementAttr) {
+        let result = false;
+        console.log(elementAttr);
         return true;
     }
     function match(selector, element) {
        // console.log(element);
         const selectLists = selector.split(" ").reverse();//[ #test, div>p];
         
-        let selectList = selectLists[0].match(/((#|.|\[)?[\w]+=*\^*~*[\w]+\$*)/g);
+        let selectList = selectLists[0].match(/((#|.|\[)?[\w]+=*\^*~*[\w]*%*\$*)/g);
         //console.log(selectList);
         if (selectList.length > 1) {
             for (let i = 0; i < selectList.length; i++) {
@@ -80,16 +82,18 @@
                 }
             }
         }
+        console.log(element.attributes);
         if (selector.charAt(0) == "#") {
             findResult = getId(selector, element.attributes['id']) ;
-            console.log(findResult);
         }
         if (selector.charAt(0) == ".") {
-            console.log(getClass(selector, element.attributes['class']));
-            //findResult = getClass(selector, element.attributes['class']);
+            //console.log(getClass(selector, element.attributes['class']));
+            findResult = getClass(selector, element.attributes['class']);
         }
         if (selector.charAt(0) == "[") {
-            findResult = getAttr(selector, element.attributes);
+            let selectorTemp = selector.split('=')[0].substring(1);
+            let selectorValue = selector.split('=')[1];
+            findResult = getAttr(selectorTemp,selectorValue, element.attributes);
         }
         
         
@@ -100,6 +104,6 @@
         return findResult;
     }
     
-    console.log(match("div #id.class", document.getElementById("id")));
-    //console.log(match("div>p .class #id[width=^test]", document.getElementById("id")));
+    //console.log(match("div #id.class", document.getElementById ("id")));
+    console.log(match("div [width=udhfud][attr-data=hjuhuh]", document.getElementById("id")));
 </script>
