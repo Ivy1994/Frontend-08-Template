@@ -101,3 +101,6 @@ user.options 修改属性 plugins: [ ["@babel/plugin-tansform-react-jsx", {pragm
 *********************************************************
 
 1. 实现 Carousel 轮播组件
+1.1 安装 webpack-dev-server (避免每次都要重新敲 webpack 进行编译打包) npm install --save-dev  webpack-dev-server
+|| npm install --save-dev webpack-cli
+安装后使用 webpack-dev-server
